@@ -5,12 +5,12 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/auth");
 const dashboardRoutes = require("./routes/dashboard");
+const customerRoutes = require("./routes/customer");
 
 dotenv.config();
 
 const app = express();
 
-// MongoDB URI இருந்தால் மட்டும் connect ஆகும்
 if (
   process.env.MONGO_URI &&
   (process.env.MONGO_URI.startsWith("mongodb://") ||
@@ -31,6 +31,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/customers", customerRoutes);
 
 const PORT = process.env.PORT || 5000;
 
