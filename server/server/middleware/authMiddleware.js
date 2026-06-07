@@ -1,34 +1,14 @@
-const jwt = require("jsonwebtoken");
+const express = require("express");
+const router = express.Router();
 
-module.exports = (req, res, next) => {
+const auth = require("../middleware/authMiddleware");
 
-  const token = req.header("Authorization");
+router.get("/", auth, (req, res) => {
+  res.json({
+    success: true,
+    message: "Welcome Admin Dashboard",
+    user: req.user
+  });
+});
 
-  if (!token) {
-    return res.status(401).json({
-      success: false,
-      message: "No Token, Access Denied"
-    });
-  }
-
-  try {
-
-    const decoded = jwt.verify(
-      token.replace("Bearer ", ""),
-      process.env.JWT_SECRET
-    );
-
-    req.user = decoded;
-
-    next();
-
-  } catch (err) {
-
-    return res.status(401).json({
-      success: false,
-      message: "Invalid Token"
-    });
-
-  }
-
-};
+module.exports = router;
